@@ -1,0 +1,321 @@
+.app {
+  max-width: 500px;
+  margin: 40px auto;
+  text-align: center;
+  padding: 20px;
+}
+
+.difficulty-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.difficulty-buttons button.active {
+  background: #4a90e2;
+  color: white;
+}
+
+.sudoku-grid {
+  display: inline-block;
+  border: 3px solid #333;
+  margin: 20px auto;
+}
+
+.sudoku-row {
+  display: flex; /* это и делает сетку, а не столбец */
+}
+
+.sudoku-cell {
+  width: 45px;
+  height: 45px;
+  border: 1px solid #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  cursor: pointer;
+  user-select: none;
+  background: white;
+  box-sizing: border-box;
+}
+
+.sudoku-cell.original {
+  font-weight: bold;
+  background: #f5f5f5;
+  cursor: default;
+}
+
+.sudoku-cell.selected {
+  background: #7eb6ff;
+  outline: 3px solid #1a73e8;
+  outline-offset: -3px;
+  z-index: 1;
+  position: relative;
+  box-shadow: inset 0 0 0 1px #1a73e8;
+}
+
+.sudoku-cell.related {
+  background: #eef6ff;
+}
+
+.sudoku-cell.error {
+  color: #d32f2f;
+  background: #ffebee;
+  font-weight: 600;
+}
+
+.sudoku-cell.error.selected {
+  background: #ff8a80;
+  outline-color: #c62828;
+  box-shadow: inset 0 0 0 1px #c62828;
+}
+
+.sudoku-cell.border-right {
+  border-right: 2px solid #333;
+}
+
+.sudoku-cell.border-bottom {
+  border-bottom: 2px solid #333;
+}
+
+.keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 240px;
+  margin: 16px auto 0;
+}
+
+.keypad-btn {
+  height: 48px;
+  font-size: 18px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  background: white;
+  cursor: pointer;
+}
+
+.keypad-btn:active {
+  background: #e8f0fe;
+}
+
+.keypad-clear {
+  grid-column: 1 / -1;
+  background: #ffe6e6;
+  border-color: #ffb3b3;
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.message {
+  margin: 12px 0;
+  font-weight: 600;
+}
+
+.hint {
+  margin-top: 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.wins-panel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.total-wins {
+  font-size: 16px;
+}
+
+.wins-by-difficulty {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.win-badge {
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #eee;
+}
+
+.win-badge.easy {
+  background: #e3f2e8;
+}
+
+.win-badge.medium {
+  background: #fff3e0;
+}
+
+.win-badge.hard {
+  background: #fde8e8;
+}
+
+.reset-stats {
+  font-size: 13px;
+  padding: 4px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+}
+
+/* Статистика (таймер и прогресс) */
+.stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 460px;
+  margin: 0 auto 10px;
+  padding: 0 5px;
+}
+
+.timer {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  font-variant-numeric: tabular-nums;
+  background: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-info {
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 600px) {
+  .timer {
+    font-size: 18px;
+    padding: 6px 12px;
+  }
+  
+  .progress-info {
+    font-size: 14px;
+  }
+}
+
+/* Обертка для сетки с поддержкой размытия */
+.sudoku-wrapper {
+  position: relative;
+  display: inline-block;
+  margin: 20px 0;
+}
+
+.sudoku-wrapper .sudoku-grid {
+  margin: 0; /* Убираем margin, так как он теперь на wrapper */
+  transition: filter 0.3s ease;
+}
+
+/* Размытие сетки при паузе */
+.sudoku-wrapper.paused .sudoku-grid {
+  filter: blur(8px);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Оверлей паузы */
+.pause-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  z-index: 10;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.pause-content {
+  text-align: center;
+  background: white;
+  padding: 30px 40px;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: scaleIn 0.3s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.pause-icon {
+  font-size: 60px;
+  margin-bottom: 10px;
+}
+
+.pause-text {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.pause-hint {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Активная кнопка паузы */
+.controls button.pause-active {
+  background: #ff9800;
+}
+
+.controls button.pause-active:hover {
+  background: #f57c00;
+}
+
+/* Адаптивность для мобильных */
+@media (max-width: 600px) {
+  .pause-icon {
+    font-size: 45px;
+  }
+  
+  .pause-text {
+    font-size: 22px;
+  }
+  
+  .pause-hint {
+    font-size: 12px;
+  }
+  
+  .pause-content {
+    padding: 20px 25px;
+  }
+}
